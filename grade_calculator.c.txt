@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <string.h>
+
+// Function to get letter grade
+char* getLetterGrade(float avg) {
+    if (avg >= 90)
+        return "A";
+    else if (avg >= 80)
+        return "B";
+    else if (avg >= 70)
+        return "C";
+    else if (avg >= 60)
+        return "D";
+    else
+        return "F";
+}
+
+// Function to print result
+void printResult(char name[], float grades[], int n) {
+    float sum = 0;
+    int i;
+
+    for (i = 0; i < n; i++) {
+        sum += grades[i];
+    }
+
+    float avg = sum / n;
+
+    printf("\n--- Result for %s ---\n", name);
+    printf("Subjects entered: %d\n", n);
+    printf("Total marks: %.2f\n", sum);
+    printf("Average: %.2f\n", avg);
+    printf("Grade: %s\n", getLetterGrade(avg));
+
+    if (avg >= 60)
+        printf("Status: PASS\n");
+    else
+        printf("Status: FAIL\n");
+}
+
+int main() {
+    char name[50];
+    int n, i;
+    float grades[20];
+
+    printf("=== Student Grade Calculator ===\n\n");
+
+    printf("Enter student name: ");
+    fgets(name, sizeof(name), stdin);
+    // remove newline
+    name[strcspn(name, "\n")] = 0;
+
+    printf("How many subjects? ");
+    scanf("%d", &n);
+
+    if (n <= 0 || n > 20) {
+        printf("Invalid number of subjects. Please enter between 1 and 20.\n");
+        return 1;
+    }
+
+    for (i = 0; i < n; i++) {
+        printf("Enter marks for subject %d (out of 100): ", i + 1);
+        scanf("%f", &grades[i]);
+
+        if (grades[i] < 0 || grades[i] > 100) {
+            printf("Invalid marks! Please enter value between 0 and 100.\n");
+            i--; // ask again
+        }
+    }
+
+    printResult(name, grades, n);
+
+    return 0;
+}
